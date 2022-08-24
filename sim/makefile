@@ -5,6 +5,7 @@ DFLAGS = -relocation-model=pic -w
 
 LDC2BINDIR = $(dir $(shell which ldc2))
 VLBINDIR = $(dir $(shell which verilator))
+VERBOSITY = DEBUG
 
 VLATOR_SRC = euvm_dir/Vaxi_regs_euvm.d euvm_dir/Vaxi_regs_euvm_funcs.cpp obj_dir/Vaxi_regs.cpp obj_dir/Vaxi_regs.h
 
@@ -14,7 +15,7 @@ clean:
 	rm -rf axi_test* euvm_dir obj_dir verilator.stamp
 
 run: axi_test
-	./axi_test +UVM_TESTNAME=axi_test.axi_dir_test +UVM_VERBOSITY=DEBUG # +UVM_OBJECTION_TRACE
+	./axi_test +UVM_TESTNAME=axi_test.axi_dir_test +UVM_VERBOSITY=$(VERBOSITY) # +UVM_OBJECTION_TRACE
 
 verilator.stamp: ../rtl/axi_regs.sv
 	touch verilator.stamp
