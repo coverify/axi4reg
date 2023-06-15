@@ -7,7 +7,22 @@ import axi_seq;
 import axi_scrb;
 import axi_env;
 
+class axi_error_demoter(string ID, string RX): uvm_report_catcher
+{
+  this(string name="Error Demoter") {
+    super(name);
+  }
 
+  override action_e do_catch() {
+    if (get_severity() == UVM_ERROR) {
+      if ((ID == "" || ID == get_id()) &&
+	  uvm_is_match("*" ~ RX ~ "*", get_message())) {
+	set_severity(UVM_INFO);
+      }
+    }
+    return action_e.THROW;
+  }
+}
 
 class axi_dir_test: uvm_test
 {
@@ -70,6 +85,14 @@ class axi_dir_test: uvm_test
     phase.drop_objection(this, "dir_axi_seq");
   }
 
+  override void end_of_elaboration_phase(uvm_phase phase) {
+    super.end_of_elaboration_phase(phase);
+    auto ro_demoter =
+      new axi_error_demoter!("MISMATCH", "Address 00000014")("ro_demoter");
+    uvm_report_cb.add(scoreboard, ro_demoter);
+    // scoreboard.set_report_severity_id_override(UVM_ERROR, "MISMATCH", UVM_WARNING);
+  }
+  
   override void report_phase(uvm_phase phase) {
     uvm_info("INFO", "Called my_test::report_phase", UVM_NONE);
   }
