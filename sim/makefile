@@ -22,7 +22,7 @@ verilator.stamp: ../rtl/axi_regs.sv
 	verilator -I../rtl -Wno-WIDTH -Wno-CASEINCOMPLETE --trace --cc --euvm $^
 	(cd euvm_dir; g++ -c -I ../obj_dir/ -I $(VLBINDIR)/../share/verilator/include Vaxi_regs_euvm_funcs.cpp)
 	(cd euvm_dir; g++ -c -I ../obj_dir/ -I $(VLBINDIR)/../share/verilator/include $(LDC2BINDIR)/../import/esdl/intf/verilator/cpp/verilated_vcd_d.cpp -o verilated_vcd_d.o)
-	(cd obj_dir; make OPT=" -ggdb " -f Vaxi_regs.mk Vaxi_regs__ALL.a verilated.o verilated_vcd_c.o)
+	(cd obj_dir; make OPT=" -ggdb " -f Vaxi_regs.mk Vaxi_regs__ALL.a verilated.o verilated_vcd_c.o verilated_threads.o)
 
 euvm_dir/Vaxi_regs_euvm.d euvm_dir/Vaxi_regs_euvm_funcs.o euvm_dir/verilated_vcd_d.o obj_dir/Vaxi_regs__ALL.a obj_dir/verilated.o: verilator.stamp
 
@@ -35,7 +35,7 @@ axi_test: euvm_dir/Vaxi_regs_euvm.d \
 	   $(LDC2BINDIR)/../import/esdl/intf/verilator/trace.d \
 	   euvm_dir/Vaxi_regs_euvm_funcs.o euvm_dir/verilated_vcd_d.o \
 	   obj_dir/Vaxi_regs__ALL.a \
-	   obj_dir/verilated.o  obj_dir/verilated_vcd_c.o
+	   obj_dir/verilated.o  obj_dir/verilated_threads.o obj_dir/verilated_vcd_c.o
 	ldc2 -g $(DFLAGS) -Ieuvm_dir -link-defaultlib-shared -of$@ -L-luvm-ldc-shared -L-lesdl-ldc-shared \
 		-L-lphobos2-ldc-shared -L-lz3 -L-ldl $^ -L-lstdc++
 
