@@ -58,23 +58,23 @@ class axi_agent(int DW, int AW): uvm_agent
    // build_phase
    // connect_phase
   override void connect_phase(uvm_phase phase) {
-    // if (get_is_active() == UVM_ACTIVE) {
-    ar_driver.seq_item_port.connect(ar_seqr.seq_item_export);
-    aw_driver.seq_item_port.connect(aw_seqr.seq_item_export);
-    dw_driver.seq_item_port.connect(dw_seqr.seq_item_export);
+    if (get_is_active() == UVM_ACTIVE) {
+      ar_driver.seq_item_port.connect(ar_seqr.seq_item_export);
+      aw_driver.seq_item_port.connect(aw_seqr.seq_item_export);
+      dw_driver.seq_item_port.connect(dw_seqr.seq_item_export);
 
-    ar_collector.item_collected_port.connect(ar_monitor.addr_in);
-    aw_collector.item_collected_port.connect(aw_monitor.addr_in);
-    b_collector.item_collected_port.connect(b_monitor.resp_in);
-    r_collector.item_collected_port.connect(r_monitor.data_in);
-    w_collector.item_collected_port.connect(w_monitor.data_in);
+      ar_collector.item_collected_port.connect(ar_monitor.addr_in);
+      aw_collector.item_collected_port.connect(aw_monitor.addr_in);
+      b_collector.item_collected_port.connect(b_monitor.resp_in);
+      r_collector.item_collected_port.connect(r_monitor.data_in);
+      w_collector.item_collected_port.connect(w_monitor.data_in);
 
-    b_monitor.item_mon_port.connect(monitor.wresp_in);
-    aw_monitor.item_mon_port.connect(monitor.waddr_in);
-    w_monitor.item_mon_port.connect(monitor.wdata_in);
-    ar_monitor.item_mon_port.connect(monitor.raddr_in);
-    r_monitor.item_mon_port.connect(monitor.rdata_in);
-    // }
+      b_monitor.item_mon_port.connect(monitor.wresp_in);
+      aw_monitor.item_mon_port.connect(monitor.waddr_in);
+      w_monitor.item_mon_port.connect(monitor.wdata_in);
+      ar_monitor.item_mon_port.connect(monitor.raddr_in);
+      r_monitor.item_mon_port.connect(monitor.rdata_in);
+    }
   } // : connect_phase
 
 } // axi_agent
