@@ -89,7 +89,10 @@ class axi_dir_test: uvm_test
     super.end_of_elaboration_phase(phase);
     auto ro_demoter =
       new axi_error_demoter!("MISMATCH", "Address 00000014")("ro_demoter");
+    auto ro2_demoter =
+      new axi_error_demoter!("MISMATCH", "Address 00000010")("ro_demoter");
     uvm_report_cb.add(scoreboard, ro_demoter);
+    uvm_report_cb.add(scoreboard, ro2_demoter);
     // scoreboard.set_report_severity_id_override(UVM_ERROR, "MISMATCH", UVM_WARNING);
   }
   
